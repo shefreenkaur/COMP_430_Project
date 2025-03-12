@@ -129,7 +129,7 @@ This design enables efficient querying and analysis across multiple dimensions.
 
 ## 🎓 Academic Context
 
-This project was developed as part of the COMP 430 course in Semester 8. It demonstrates the application of business intelligence principles, data visualization techniques, and full-stack development in the context of algorithmic trading systems.
+This project was developed as part of the COMP 430 course. It demonstrates the application of business intelligence principles, data visualization techniques, and full-stack development in the context of algorithmic trading systems.
 
 ## 🔮 Future Enhancements
 
