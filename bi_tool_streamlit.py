@@ -4,6 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import requests
 from datetime import datetime, timedelta
+import json
 
 # Set page config
 st.set_page_config(
@@ -27,7 +28,11 @@ st.title("Algorithmic Trading Dashboard")
 def fetch_symbols():
     try:
         response = requests.get(f"{API_URL}/symbols")
-        return response.json() if response.status_code == 200 else []
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error fetching symbols: Status code {response.status_code}")
+            return []
     except Exception as e:
         st.error(f"Error fetching symbols: {e}")
         return []
@@ -35,18 +40,29 @@ def fetch_symbols():
 def fetch_strategies():
     try:
         response = requests.get(f"{API_URL}/strategies")
-        return response.json() if response.status_code == 200 else []
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error fetching strategies: Status code {response.status_code}")
+            return []
     except Exception as e:
         st.error(f"Error fetching strategies: {e}")
         return []
 
 def fetch_trades(params=None):
     try:
+        # Debug info - can be removed later
+        st.sidebar.expander("Debug Info").write(f"API params: {params}")
+        
         response = requests.get(f"{API_URL}/trades", params=params)
+        
         if response.status_code == 200:
             return response.json()
         else:
             st.error(f"API returned error: {response.status_code}")
+            # Display response text if available
+            if hasattr(response, 'text'):
+                st.error(f"Response: {response.text}")
             return []
     except Exception as e:
         st.error(f"Error fetching trades: {e}")
@@ -55,7 +71,11 @@ def fetch_trades(params=None):
 def fetch_performance(strategy_id, days=30):
     try:
         response = requests.get(f"{API_URL}/performance/{strategy_id}?days={days}")
-        return response.json() if response.status_code == 200 else []
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error fetching performance: Status code {response.status_code}")
+            return []
     except Exception as e:
         st.error(f"Error fetching performance: {e}")
         return []
@@ -85,24 +105,47 @@ selected_strategy = st.sidebar.selectbox("Strategy", strategy_options)
 asset_classes = ["All", "Equity", "Crypto", "Forex"]
 selected_asset_class = st.sidebar.selectbox("Asset Class", asset_classes)
 
-# Manual refresh button instead of auto-refresh
+# Manual refresh button
 if st.sidebar.button("Refresh Data"):
     st.session_state.refresh_count += 1
 
 # Prepare filter parameters for API
 params = {}
+
+# Date filters - ensure proper formatting
 if start_date:
     params["start_date"] = start_date.isoformat()
 if end_date:
-    params["end_date"] = end_date.isoformat()
+    # Add one day to include the end date in results
+    end_date_adjusted = end_date + timedelta(days=1)
+    params["end_date"] = end_date_adjusted.isoformat()
+
+# Symbol filter
 if selected_symbol != "All":
-    symbol_id = next((s["id"] for s in symbols if s["symbol"] == selected_symbol), None)
-    if symbol_id:
+    # Find the ID of the selected symbol
+    symbol_id = None
+    for s in symbols:
+        if s["symbol"] == selected_symbol:
+            symbol_id = s["id"]
+            break
+    
+    if symbol_id is not None:
         params["symbol_id"] = symbol_id
+
+# Strategy filter
 if selected_strategy != "All":
-    strategy_id = next((s["id"] for s in strategies if s["name"] == selected_strategy), None)
-    if strategy_id:
+    # Find the ID of the selected strategy
+    strategy_id = None
+    for s in strategies:
+        if s["name"] == selected_strategy:
+            strategy_id = s["id"]
+            break
+    
+    if strategy_id is not None:
         params["strategy_id"] = strategy_id
+
+# Note: We'll handle asset class filtering in Streamlit after getting data
+# because it's easier than modifying the API endpoint
 
 # Fetch trading data
 trades = fetch_trades(params)
@@ -115,7 +158,7 @@ else:
     df = pd.DataFrame(trades)
     
     # Apply asset class filter if needed
-    if selected_asset_class != "All":
+    if selected_asset_class != "All" and "asset_class" in df.columns:
         df = df[df["asset_class"] == selected_asset_class]
     
     # If dataframe is empty after filtering
@@ -166,7 +209,10 @@ else:
         fig1.update_layout(
             xaxis_title="Symbol",
             yaxis_title="Value ($)",
-            bargap=0.4  # Add space between bars
+            bargap=0.4,  # Add space between bars
+            yaxis=dict(
+                tickformat=",.0f",  # Format numbers with commas
+            )
         )
         # Use a unique key with refresh count to avoid duplicate key errors
         st.plotly_chart(fig1, use_container_width=True, key=f"symbol_chart_{st.session_state.refresh_count}")
@@ -188,7 +234,7 @@ else:
         
         with col2:
             # Performance chart logic
-            if selected_strategy != "All" and 'strategy_id' in locals() and strategy_id:
+            if selected_strategy != "All" and 'strategy_id' in locals() and strategy_id is not None:
                 perf_data = fetch_performance(strategy_id)
                 if perf_data:
                     perf_df = pd.DataFrame(perf_data)

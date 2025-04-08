@@ -8,7 +8,7 @@ engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
 
-# Your existing SalesData model
+# existing SalesData model
 class SalesData(Base):
     __tablename__ = "sales"
     id = Column(Integer, primary_key=True, index=True)
@@ -54,4 +54,4 @@ class TradeFact(Base):
     strategy_id = Column(Integer, ForeignKey('strategy_dim.id'))
 
 # Create tables if they don't exist
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)  

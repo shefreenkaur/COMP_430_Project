@@ -8,7 +8,7 @@ import sys
 # Add the project directory to the path to ensure imports work
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import your database models - adjust these imports to match your actual structure
+# Import database models 
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
@@ -19,7 +19,7 @@ engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
 
-# Define models (only if they don't exist in your database.py)
+# Define models 
 class SymbolDimension(Base):
     __tablename__ = 'symbol_dim'
     
