@@ -10,6 +10,8 @@ A comprehensive, open-source business intelligence visualization tool designed f
 - **Multi-Dimensional Analysis**: Filter by symbol, strategy, time period, and asset class
 - **Real Market Data Integration**: Uses real-world data from Yahoo Finance
 - **Star Schema Data Model**: Optimized for analytical processing
+![image](https://github.com/user-attachments/assets/d8e71c13-7d8f-4fd1-be8a-ec6dc4bd1f22)
+
 
 ##  Technology Stack
 
@@ -121,6 +123,15 @@ This design enables efficient querying and analysis across multiple dimensions.
 - Performance over time
 - Recent trades table
 - Key performance metrics
+
+![image](https://github.com/user-attachments/assets/de645566-c837-407b-836f-e766c6e3749d)
+
+![image](https://github.com/user-attachments/assets/c352de1d-7a62-4396-abb1-5b854dcfb707)
+
+![image](https://github.com/user-attachments/assets/62144b42-8b59-4e71-ba40-8ba2327314e2)
+
+
+
 
 ## Contributors
 
