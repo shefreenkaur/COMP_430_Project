@@ -2,7 +2,7 @@
 
 A comprehensive, open-source business intelligence visualization tool designed for algorithmic trading systems. This application transforms complex trading data into intuitive visualizations, enabling traders and analysts to make data-driven decisions.
 
-## 📊 Features
+## Features
 
 - **Multi-Asset Class Analysis**: Support for equities, cryptocurrencies, and forex
 - **Interactive Dashboards**: Dynamic charts and filters for data exploration
@@ -11,7 +11,7 @@ A comprehensive, open-source business intelligence visualization tool designed f
 - **Real Market Data Integration**: Uses real-world data from Yahoo Finance
 - **Star Schema Data Model**: Optimized for analytical processing
 
-## 🖥️ Technology Stack
+##  Technology Stack
 
 - **Backend**: FastAPI + Uvicorn
 - **Frontend**: Streamlit + Plotly
@@ -19,7 +19,7 @@ A comprehensive, open-source business intelligence visualization tool designed f
 - **Data Processing**: Pandas + yfinance
 - **Version Control**: Git
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -68,7 +68,7 @@ A comprehensive, open-source business intelligence visualization tool designed f
 
 4. Access the dashboard at http://localhost:8501
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 Project/
@@ -96,7 +96,7 @@ Project/
 └── README.md            # Project documentation
 ```
 
-## 🔍 Core Components
+## Core Components
 
 ### 1. Data Model
 
@@ -122,16 +122,16 @@ This design enables efficient querying and analysis across multiple dimensions.
 - Recent trades table
 - Key performance metrics
 
-## 👥 Contributors
+## Contributors
 
 - **Diego Mckay** - Initial project setup, database foundation, API framework, basic dashboard
 - **Shefreen Kaur** - Advanced data modeling, data pipeline, enhanced API layer, advanced visualizations, system integration
 
-## 🎓 Academic Context
+## Academic Context
 
 This project was developed as part of the COMP 430 course. It demonstrates the application of business intelligence principles, data visualization techniques, and full-stack development in the context of algorithmic trading systems.
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - Real-time data streaming via WebSockets
 - User authentication and multitenancy
